@@ -2,17 +2,43 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { TaskItem, TaskList } from "@tiptap/extension-list";
+import { TableKit } from "@tiptap/extension-table";
+import Image from "@tiptap/extension-image";
+// import ImageResize from "tiptap-extension-resize-image";
 
 export const Editor = () => {
   const editor = useEditor({
     editorProps: {
       attributes: {
         style: "padding-left: 56px; padding-right: 56px;",
-        class: "focus:outline-none border print:border-0 bg-white border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
+        class:
+          "focus:outline-none border print:border-0 bg-white border-[#C7C7C7] flex flex-col min-h-[1054px] w-[816px] pt-10 pr-14 pb-10 cursor-text",
       },
     },
-    extensions: [StarterKit],
-    content: "<p>Hello World! 🌎️</p>",
+    extensions: [
+      StarterKit,
+      Image.configure({
+        allowBase64: true,
+        resize: {
+          enabled: true,
+          directions: ["top", "bottom", "left", "right"], 
+          alwaysPreserveAspectRatio: true,
+        },
+      }),
+      TaskList,
+      TaskItem.configure({
+        nested: true,
+      }),
+      TableKit.configure({
+        table: { resizable: true },
+      }),
+    ],
+    content: `
+        <p>This is a basic example of implementing images. Drag to re-order.</p>
+        <img src="https://placehold.co/600x400" />
+        <img src="https://placehold.co/800x400" />
+      `,
   });
 
   return (
